@@ -183,7 +183,7 @@ Le code est publié sur GitHub avec une **clé SSH** (aucun mot de passe n'est t
 ssh-keygen -t ed25519 -C "examen-bookworld"
 ```
 
-Deux fichiers sont créés dans `C:\Users\<votre nom>\.ssh\` : `id_ed25519` (clé **privée**, à ne jamais partager) et `id_ed25519.pub` (clé **publique**).
+Deux fichiers sont créés dans le dossier `.ssh` de votre profil Windows : la clé **privée** (à ne jamais partager ni copier nulle part) et la clé **publique**, dont le nom se termine par `.pub`.
 
 **2. Copier la clé publique** dans le presse-papiers :
 
