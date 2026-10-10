@@ -68,7 +68,7 @@ pip install -r requirements.txt
 
 L'installation prend une à deux minutes. Elle est terminée quand la ligne de commande réapparaît.
 
-> **À chaque nouvelle fenêtre PowerShell**, il faut se replacer dans le dossier du projet (`cd ...\examen_final`) et refaire l'activation (`.\.venv\Scripts\Activate.ps1`). L'installation, elle, ne se refait pas.
+> **À chaque nouvelle fenêtre PowerShell**, il faut se replacer dans le dossier du projet (`cd ...\examen_final`), refaire l'autorisation (`Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`, réponse `O`) puis l'activation (`.\.venv\Scripts\Activate.ps1`). Sans cela, un message rouge « l'exécution de scripts est désactivée sur ce système » apparaît. L'installation, elle, ne se refait pas.
 
 ---
 
@@ -157,7 +157,19 @@ Réponse : `{"detail":"Token manquant : ajouter l'en-tete 'Authorization: Bearer
 | `GET /sales-by-country` | token requis | Ventes agrégées par pays |
 | `GET /docs` | libre | Documentation interactive, à ouvrir dans un navigateur : http://127.0.0.1:8000/docs |
 
-Si vous régénérez le token (3.1), redémarrez l'API (3.2) pour qu'elle le prenne en compte.
+**Variante dans le navigateur.** Taper l'adresse `/sales-by-country` dans la barre du navigateur affiche « Token manquant » : le navigateur n'envoie pas de token tout seul. Pour voir les résultats, passez par la documentation de l'API :
+
+1. Copiez le token dans le presse-papiers (depuis le dossier du projet) :
+
+```powershell
+(Get-Content .env | Select-Object -First 1).Split("=")[1] | Set-Clipboard
+```
+
+2. Ouvrez http://127.0.0.1:8000/docs puis cliquez sur le bouton **Authorize** (cadenas).
+3. Collez le token avec `Ctrl+V` (seulement le token, sans le mot « Bearer »), cliquez sur **Authorize** puis **Close**.
+4. Dépliez `GET /sales-by-country`, cliquez sur **Try it out** puis **Execute**. Le code `200` et les 8 pays s'affichent dans « Response body ». La partie « Example Value » plus bas n'est qu'un exemple de format, pas les vraies données.
+
+> **Important : l'API lit le fichier `.env` une seule fois, au démarrage.** Si vous créez ou modifiez le token (3.1) alors que l'API tourne déjà, elle garde l'ancien et répond « Token invalide ». Dans ce cas : arrêtez l'API avec `Ctrl+C` dans sa fenêtre, relancez `python api.py`, puis recopiez le token. Si la fenêtre de l'API a été fermée, rouvrez une fenêtre PowerShell, replacez-vous dans le dossier du projet, activez l'environnement (`.\.venv\Scripts\Activate.ps1`) et relancez `python api.py`.
 
 ---
 
